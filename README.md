@@ -90,55 +90,32 @@ make -j$(nproc)
 ```
 
 ## 4. Build a Disk Image
-### To Create, Format, and Mount an Empty Img:
+### Build the initramfs
 ```bash
-cd $DUMPSTEROS
-
-dd if=/dev/zero of=dumpsteros.img bs=1M count=100
-
-mkfs.ext4 dumpsteros.img
-
-mkdir -p mnt
-sudo mount -o loop dumpsteros.img mnt
-```
-### Copy rootfs to the Image
-```bash
-sudo cp -a rootfs/* mnt/
-```
-### Install extlinux Bootloader
-```bash
-sudo extlinux --install mnt/boot
-```
-### Create a Bootloader Config:
-```bash
-sudo tee mnt/boot/extlinux.conf << 'EOF'
-DEFAULT dumpsteros
-PROMPT 0
-TIMEOUT 50
-
-LABEL dumpsteros
-  LINUX /boot/vmlinuz
-  APPEND root=/dev/sda rw console=tty0
-EOF
-```
-### Copy the Kernel to Boot
-```bash
-sudo cp linux-6.12.4/arch/x86/boot/bzImage mnt/boot/vmlinuz
-```
-### Unmount
-```bash
-sudo umount mnt
-```
-### Install the MBR
-```
-sudo dd bs=440 count=1 conv=notrunc if=/usr/lib/syslinux/mbr/mbr.bin of=dumpsteros.img
+cd $DUPMSTEROS/rootfs
+find . | cpio -H newc -o | gzip > ../initramfs.img
 ```
 
 ## 5. Boot with QEMU
-We now have a bootable img at `$DUMPSTEROS/dumpsteros.img`, so lets boot it.
+We now have a bootable img at `$DUMPSTEROS/initramfs.img`, so lets boot it.
 ```bash
-qemu-system-x86_64 -drive file=dumpsteros.img,format=raw -m 512M
+cd ..
+
+qemu-system-x86_64 \
+  -kernel linux-6.12.4/arch/x86/boot/bzImage \
+  -initrd initramfs.img \
+  -append "console=ttyS0" \
+  -nographic
 ```
+### To have a GUI window:
+1. Remove `-nographic   -append "console=ttyS0"`
+2. Add the following:
+  ```
+   -append "console=tty1" \
+   -m 512M \
+   -vga std
+   ```
+
 
 
 ## Resources
