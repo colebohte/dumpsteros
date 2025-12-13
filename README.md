@@ -1,5 +1,32 @@
 # Dumpster OS
-DumpsterOS is a tiny <50MB Linux distrobution designed to run on PCs you pull out of the dumpster.
+
+DumpsterOS is a lightweight, minimal Linux distribution built entirely from scratch, weighing in at under 50MB. Designed with extreme resource efficiency in mind, it's perfect for breathing new life into hardware that others have thrown away, literally or figuratively.
+
+## Philosophy
+
+Born from the idea that computing doesn't require bloat, DumpsterOS strips away everything unnecessary to deliver a fast, functional, and surprisingly capable system. Whether you're reviving a decades-old laptop found in a dumpster, building an embedded system, or just want to understand how Linux works at its core, DumpsterOS provides a clean, minimalist foundation.
+
+## What Makes It Different
+
+Unlike mainstream distributions that come bundled with GNU utilities and massive package repositories, DumpsterOS takes a different approach:
+
+- **Pure Linux/Busybox stack**: No GNU bloat, just the Linux kernel and Busybox providing 300+ essential Unix utilities in a single ~1MB binary
+- **Sub-50MB footprint**: The entire operating system, bootloader included, fits comfortably on ancient hardware or embedded devices
+- **Built from scratch**: Every component compiled and configured manually, giving you complete control and understanding of your system
+- **Lightning fast boot**: Optimized init sequence gets you to a working shell in seconds
+- **Perfect for learning**: Clean, minimal codebase makes it ideal for understanding how Linux distributions are actually built
+
+## Use Cases
+
+- Rescue old hardware from obsolescence
+- Embedded systems and IoT devices  
+- Learning platform for understanding Linux internals
+- Minimalist computing philosophy
+- Portable system on USB drives
+- Virtual machine testing environments
+- Base for custom specialized distributions
+
+DumpsterOS proves that powerful computing doesn't require gigabytes of dependencies—sometimes all you need is a kernel, a shell, and the will to make it work.
 
 # Building
 This segment will run you through how to build a working version of DumpsterOS and run it in an emulator like QEMU.
@@ -75,7 +102,7 @@ cd dumpsteros
 ```
 #### Optional: Set it as an environment variable:
 ```bash
-DUMPSTEROS="/path/to/git/"
+export DUMPSTEROS="/path/to/git/"
 ```
 
 ## 3. Cleaning and Building
