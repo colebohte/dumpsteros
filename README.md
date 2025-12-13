@@ -1,4 +1,4 @@
-# Dumpster OS
+# Dumpster OS <br><br><img width="5120" height="1024" alt="Image" src="https://github.com/user-attachments/assets/7ee8af7a-7bd9-4126-b645-ce2f814c9b8a" />
 
 DumpsterOS is a lightweight, minimal Linux distribution built entirely from scratch, weighing in at under 50MB. Designed with extreme resource efficiency in mind, it's perfect for breathing new life into hardware that others have thrown away, literally or figuratively.
 
