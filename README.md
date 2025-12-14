@@ -138,7 +138,7 @@ qemu-system-x86_64 \
 1. Remove `-nographic   -append "console=ttyS0"`
 2. Add the following:
   ```
-   -append "console=tty1" \
+   -append "console=tty0" \
    -m 512M \
    -vga std
    ```
