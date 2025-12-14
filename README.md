@@ -11,7 +11,7 @@ Born from the idea that computing doesn't require bloat, DumpsterOS strips away 
 Unlike mainstream distributions that come bundled with GNU utilities and massive package repositories, DumpsterOS takes a different approach:
 
 - **Pure Linux/Busybox stack**: No GNU bloat, just the Linux kernel and Busybox providing 300+ essential Unix utilities in a single ~1MB binary
-- **Sub-50MB footprint**: The entire operating system, bootloader included, fits comfortably on ancient hardware or embedded devices
+- **Sub-50MB footprint**: The entire operating system, bootloader included, fits comfortably on ancient hardware or embedded devices ***To be Re-Evaluated at Beta 2***
 - **Built from scratch**: Every component compiled and configured manually, giving you complete control and understanding of your system
 - **Lightning fast boot**: Optimized init sequence gets you to a working shell in seconds
 - **Perfect for learning**: Clean, minimal codebase makes it ideal for understanding how Linux distributions are actually built
