@@ -1,0 +1,11 @@
+#!/bin/sh
+# Bring up network interfaces
+
+# Bring up loopback
+ip link set lo up
+
+# Bring up eth0 with DHCP
+ip link set eth0 up
+udhcpc -i eth0 -s /usr/share/udhcpc/default.script -b
+
+echo "Network initialized"

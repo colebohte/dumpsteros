@@ -1,0 +1,6 @@
+#!/bin/sh
+# Reboot command for DumpsterOS
+
+echo "Rebooting DumpsterOS..."
+sync
+/bin/busybox reboot -f

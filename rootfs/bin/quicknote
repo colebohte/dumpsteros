@@ -1,0 +1,31 @@
+#!/bin/bash
+# quicknote - Quick note taking utility
+
+NOTES_DIR="/root/notes"
+mkdir -p "$NOTES_DIR"
+
+if [ $# -eq 0 ]; then
+    echo "📝 QuickNote - DumpsterOS Notes"
+    echo ""
+    echo "Usage:"
+    echo "  quicknote <message>   - Add a quick note"
+    echo "  quicknote list        - List all notes"
+    echo "  quicknote clear       - Clear all notes"
+    exit 0
+fi
+
+case "$1" in
+    list)
+        echo "📋 Your notes:"
+        cat "$NOTES_DIR/notes.txt" 2>/dev/null || echo "No notes yet"
+        ;;
+    clear)
+        rm -f "$NOTES_DIR/notes.txt"
+        echo "✓ Notes cleared"
+        ;;
+    *)
+        TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+        echo "[$TIMESTAMP] $*" >> "$NOTES_DIR/notes.txt"
+        echo "✓ Note saved"
+        ;;
+esac

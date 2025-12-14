@@ -1,0 +1,10 @@
+PRETTY_NAME="Dumpster OS Linux"
+NAME="Dumpster OS"
+VERSION_ID="26 BETA"
+VERSION="26.0 BETA"
+VERSION_CODENAME=Trashfire
+DUMPSTEROS_VERSION_FULL=26.0
+ID=dumpsteros
+HOME_URL="https://github.com/colebohte/dumpsteros"
+SUPPORT_URL="https://github.com/colebohte/dumpsteros/issues"
+BUG_REPORT_URL="https://github.com/colebohte/dumpsteros/issues"

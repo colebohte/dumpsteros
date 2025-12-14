@@ -1,0 +1,138 @@
+#!/bin/sh
+# garbagefetch - System info fetcher for DumpsterOS
+
+# Colors
+RST='\033[0m'
+BOLD='\033[1m'
+GRAY='\033[90m'
+
+# ASCII art (dumpster/trash can) - all lines padded to 35 chars
+art1="                                   "
+art2="              @@@@@@@@@@           "
+art3="             @@@@@@@@@@@@          "
+art4="     @@@@@@@@@@@@@@@@@@@@@@@@@@@@  "
+art5="      @@@@@@@@@@@@@@@@@@@@@@@@@@   "
+art6="                                   "
+art7="       @@@@@@@@@@@@@@@@@@@@@@@@    "
+art8="       @@@@@@@@@@@@@@@@@@@@@@@@    "
+art9="       @@@@@@@@@@@@@@@@@@@@@@@@    "
+art10="       @@@@@  @@@@  @@@@  @@@@@    "
+art11="       @@@@@  @@@@  @@@@  @@@@@    "
+art12="       @@@@@  @@@@  @@@@  @@@@@    "
+art13="       @@@@@  @@@@  @@@@  @@@@@    "
+art14="       @@@@@  @@@@  @@@@  @@@@@    "
+art15="       @@@@@  @@@@  @@@@  @@@@@    "
+art16="       @@@@@  @@@@  @@@@  @@@@@    "
+art17="       @@@@@@@@@@@@@@@@@@@@@@@@    "
+art18="        @@@@@@@@@@@@@@@@@@@@@@     "
+
+# Get system info
+get_os() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        echo "$PRETTY_NAME"
+    else
+        echo "DumpsterOS"
+    fi
+}
+
+get_host() {
+    if [ -f /sys/devices/virtual/dmi/id/product_name ]; then
+        cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null || echo "Unknown"
+    else
+        echo "QEMU Virtual Machine"
+    fi
+}
+
+get_kernel() {
+    uname -sr
+}
+
+get_uptime() {
+    uptime_sec=$(cut -d' ' -f1 /proc/uptime | cut -d'.' -f1)
+    days=$((uptime_sec / 86400))
+    hours=$(((uptime_sec % 86400) / 3600))
+    mins=$(((uptime_sec % 3600) / 60))
+    secs=$((uptime_sec % 60))
+    printf "%dd %02dh %02dm %02ds" $days $hours $mins $secs
+}
+
+get_shell() {
+    basename "$SHELL" 2>/dev/null || echo "sh"
+}
+
+get_terminal() {
+    tty 2>/dev/null || echo "/dev/ttyS0"
+}
+
+get_cpu() {
+    grep "model name" /proc/cpuinfo 2>/dev/null | head -n1 | cut -d':' -f2 | sed 's/^[ \t]*//' || echo "Unknown CPU"
+}
+
+get_gpu() {
+    # Try lspci first
+    if command -v lspci >/dev/null 2>&1; then
+        lspci 2>/dev/null | grep -i "vga\|3d\|display" | head -n1 | cut -d':' -f3 | sed 's/^[ \t]*//' || echo "Unknown GPU"
+    else
+        # Fallback to checking /sys
+        if [ -d /sys/class/drm/card0 ]; then
+            cat /sys/class/drm/card0/device/vendor 2>/dev/null | sed 's/0x//' || echo "Unknown GPU"
+        else
+            echo "Unknown GPU"
+        fi
+    fi
+}
+
+get_memory() {
+    mem_total=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+    mem_free=$(grep MemFree /proc/meminfo | awk '{print $2}')
+    mem_used=$((mem_total - mem_free))
+    
+    # Convert to MB
+    mem_total_mb=$((mem_total / 1024))
+    mem_used_mb=$((mem_used / 1024))
+    
+    echo "${mem_used_mb}MB / ${mem_total_mb}MB"
+}
+
+get_disk() {
+    # Check if running from initramfs (rootfs type)
+    root_type=$(df -T / 2>/dev/null | awk 'NR==2 {print $2}')
+    if [ "$root_type" = "rootfs" ] || [ "$root_type" = "tmpfs" ]; then
+        echo "N/A (initramfs)"
+    else
+        df -h / 2>/dev/null | awk 'NR==2 {print $5}' || echo "N/A"
+    fi
+}
+
+# Collect info
+os=$(get_os)
+host=$(get_host)
+kernel=$(get_kernel)
+uptime=$(get_uptime)
+shell=$(get_shell)
+terminal=$(get_terminal)
+cpu=$(get_cpu)
+gpu=$(get_gpu)
+memory=$(get_memory)
+disk=$(get_disk)
+
+# Print output with ASCII art
+printf "${GRAY}%s${RST}\n" "$art1"
+printf "${GRAY}%s${RST}${BOLD}OS:${RST} %s\n" "$art2" "$os"
+printf "${GRAY}%s${RST}${BOLD}Host:${RST} %s\n" "$art3" "$host"
+printf "${GRAY}%s${RST}${BOLD}Kernel:${RST} %s\n" "$art4" "$kernel"
+printf "${GRAY}%s${RST}${BOLD}Uptime:${RST} %s\n" "$art5" "$uptime"
+printf "${GRAY}%s${RST}${BOLD}Shell:${RST} %s\n" "$art6" "$shell"
+printf "${GRAY}%s${RST}${BOLD}Terminal:${RST} %s\n" "$art7" "$terminal"
+printf "${GRAY}%s${RST}${BOLD}CPU:${RST} %s\n" "$art8" "$cpu"
+printf "${GRAY}%s${RST}${BOLD}GPU:${RST} %s\n" "$art9" "$gpu"
+printf "${GRAY}%s${RST}${BOLD}Memory:${RST} %s\n" "$art10" "$memory"
+printf "${GRAY}%s${RST}${BOLD}Disk:${RST} %s\n" "$art11" "$disk"
+printf "${GRAY}%s${RST}\n" "$art12"
+printf "${GRAY}%s${RST}\033[40m   \033[41m   \033[42m   \033[43m   \033[44m   \033[45m   \033[46m   \033[47m   ${RST}\n" "$art13"
+printf "${GRAY}%s${RST}\033[100m   \033[101m   \033[102m   \033[103m   \033[104m   \033[105m   \033[106m   \033[107m   ${RST}\n" "$art14"
+printf "${GRAY}%s${RST}\n" "$art15"
+printf "${GRAY}%s${RST}\n" "$art16"
+printf "${GRAY}%s${RST}\n" "$art17"
+printf "${GRAY}%s${RST}\n" "$art18"

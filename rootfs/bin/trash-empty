@@ -1,0 +1,10 @@
+#!/bin/bash
+TRASH_DIR="/tmp/trash"
+read -p "Empty trash permanently? (y/N) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    rm -rf "$TRASH_DIR"/*
+    echo "✓ Trash emptied"
+else
+    echo "Cancelled"
+fi

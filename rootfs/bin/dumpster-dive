@@ -1,0 +1,36 @@
+#!/bin/bash
+# dumpster-dive - A text adventure in a dumpster
+
+clear
+echo "🗑️  DUMPSTER DIVE 🗑️"
+echo "===================="
+echo ""
+echo "You are standing in front of a large, rusty dumpster."
+echo "The smell is... questionable."
+echo ""
+echo "What do you do?"
+echo "1) Climb into the dumpster"
+echo "2) Walk away like a coward"
+echo ""
+read -p "> " choice
+
+case $choice in
+    1)
+        echo ""
+        echo "You climb into the dumpster. It's dark and smells terrible."
+        echo "You find: A perfectly good computer running DumpsterOS!"
+        echo ""
+        echo "🎉 YOU WIN! 🎉"
+        ;;
+    2)
+        echo ""
+        echo "You walk away. Forever wondering what treasures lay within..."
+        echo "💔 GAME OVER"
+        ;;
+    *)
+        echo ""
+        echo "That's not an option. The dumpster eats you."
+        echo "☠️  YOU DIED"
+        ;;
+esac
+echo ""

@@ -1,0 +1,69 @@
+#!/bin/sh
+# About command - shows system version information
+
+RST='\033[0m'
+BOLD='\033[1m'
+GRAY='\033[90m'
+GREEN='\033[1;32m'
+
+echo ""
+echo "========================================"
+echo "  DumpsterOS - System Information"
+echo "========================================"
+echo ""
+
+# OS Information
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    printf "${BOLD}OS Name:${RST}          %s\n" "$NAME"
+    printf "${BOLD}OS Version:${RST}       %s\n" "$VERSION"
+    printf "${BOLD}Version ID:${RST}       %s\n" "$VERSION_ID"
+    printf "${BOLD}Codename:${RST}         %s\n" "$VERSION_CODENAME"
+    printf "${BOLD}Home URL:${RST}         %s\n" "$HOME_URL"
+    printf "${BOLD}Support URL:${RST}      %s\n" "$BUG_REPORT_URL"
+else
+    echo "${BOLD}OS:${RST} DumpsterOS (no release info)"
+fi
+
+echo ""
+
+# Kernel
+printf "${BOLD}Kernel:${RST}           %s\n" "$(uname -sr)"
+printf "${BOLD}Architecture:${RST}     %s\n" "$(uname -m)"
+
+echo ""
+
+# Shell (with timeout)
+SHELL_VERSION=$(timeout 0.25 $SHELL --version 2>/dev/null | head -n1)
+if [ -z "$SHELL_VERSION" ]; then
+    SHELL_VERSION="BusyBox ash ($(busybox | head -n1))"
+fi
+printf "${BOLD}Shell:${RST}            %s\n" "$SHELL_VERSION"
+
+echo ""
+
+# BusyBox
+BUSYBOX_VER=$(busybox | head -n1)
+printf "${BOLD}BusyBox:${RST}          %s\n" "$BUSYBOX_VER"
+
+echo ""
+
+# Uptime
+UPTIME=$(uptime -p 2>/dev/null || cat /proc/uptime | cut -d' ' -f1)
+printf "${BOLD}Uptime:${RST}           %s\n" "$UPTIME"
+
+echo ""
+
+# Memory
+MEM_TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+MEM_FREE=$(grep MemFree /proc/meminfo | awk '{print $2}')
+MEM_TOTAL_MB=$((MEM_TOTAL / 1024))
+MEM_FREE_MB=$((MEM_FREE / 1024))
+printf "${BOLD}Memory:${RST}           %s MB total, %s MB free\n" "$MEM_TOTAL_MB" "$MEM_FREE_MB"
+
+echo ""
+echo "========================================"
+echo "  Type 'licenses' for license info"
+echo "  Type 'garbagefetch' for visual info"
+echo "========================================"
+echo ""

@@ -1,0 +1,26 @@
+#!/bin/bash
+# trash - Move files to /tmp/trash instead of deleting
+
+TRASH_DIR="/tmp/trash"
+mkdir -p "$TRASH_DIR"
+
+if [ $# -eq 0 ]; then
+    echo "Usage: trash <file...>"
+    echo "Move files to trash instead of deleting them"
+    echo ""
+    echo "  trash-list    - List trashed files"
+    echo "  trash-empty   - Empty the trash"
+    echo "  trash-restore - Restore a file from trash"
+    exit 1
+fi
+
+for file in "$@"; do
+    if [ -e "$file" ]; then
+        TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+        BASENAME=$(basename "$file")
+        mv "$file" "$TRASH_DIR/${BASENAME}.${TIMESTAMP}"
+        echo "🗑️  Moved to trash: $file"
+    else
+        echo "❌ File not found: $file"
+    fi
+done
