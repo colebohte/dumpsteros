@@ -1,6 +1,0 @@
-#!/bin/sh
-# Shutdown command for DumpsterOS
-
-echo "Shutting down DumpsterOS..."
-sync
-/bin/busybox poweroff -f

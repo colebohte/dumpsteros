@@ -1,4 +1,0 @@
-#!/bin/bash
-TRASH_DIR="/tmp/trash"
-echo "📋 Trash contents:"
-ls -lh "$TRASH_DIR" 2>/dev/null || echo "Trash is empty"
