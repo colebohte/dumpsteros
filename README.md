@@ -2,9 +2,6 @@
 
 DumpsterOS is a lightweight, minimal Linux distribution built entirely from scratch, weighing in at under 50MB. Designed with extreme resource efficiency in mind, it's perfect for breathing new life into hardware that others have thrown away, literally or figuratively.
 
-## Please Note
-This Project is UNFINISHED. Along with the project being unfinished, this README is also UNFINISHED. More stuff will populate this README in the future. Any suggested features can be submitted in the issues section.
-
 ## Philosophy
 
 Born from the idea that computing doesn't require bloat, DumpsterOS strips away everything unnecessary to deliver a fast, functional, and surprisingly capable system. Whether you're reviving a decades-old laptop found in a dumpster, building an embedded system, or just want to understand how Linux works at its core, DumpsterOS provides a clean, minimalist foundation.
@@ -14,7 +11,7 @@ Born from the idea that computing doesn't require bloat, DumpsterOS strips away 
 Unlike mainstream distributions that come bundled with GNU utilities and massive package repositories, DumpsterOS takes a different approach:
 
 - **Pure Linux/Busybox stack**: No GNU bloat, just the Linux kernel and Busybox providing 300+ essential Unix utilities in a single ~1MB binary
-- **Sub-50MB footprint**: The entire operating system, bootloader included, fits comfortably on ancient hardware or embedded devices ***To be Re-Evaluated at Beta 2***
+- **Sub-50MB footprint**: The entire operating system, bootloader included, fits comfortably on ancient hardware or embedded devices
 - **Built from scratch**: Every component compiled and configured manually, giving you complete control and understanding of your system
 - **Lightning fast boot**: Optimized init sequence gets you to a working shell in seconds
 - **Perfect for learning**: Clean, minimal codebase makes it ideal for understanding how Linux distributions are actually built
